@@ -8,6 +8,20 @@ on:
     branches: [ master ]
     
 jobs:
+
+  compile:
+    runs-on: ubuntu-latest
+    name: Running Java Compile
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: '8.0.302+8'
+        distribution: 'adopt'
+    - name: Compile code
+      run: Compile code
+      
   build:
     runs-on: ubuntu-latest
     name: Run mvn build
