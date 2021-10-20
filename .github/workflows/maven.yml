@@ -51,7 +51,7 @@ jobs:
 
   run-mvn-build:
     name: ${{ matrix.distribution }} ${{ matrix.version }} (jdk-x64) - ${{ matrix.os }} -Build
-    needs: run-java-compile
+    needs: run-mvn-compile
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
