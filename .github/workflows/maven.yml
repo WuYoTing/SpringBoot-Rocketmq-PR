@@ -9,29 +9,44 @@ on:
     
 jobs:
 
-  compile:
-    runs-on: ubuntu-latest
-    name: Running Java Compile
+  run-java-compile:
+    name: ${{ matrix.distribution }} ${{ matrix.version }} (jdk-x64) - ${{ matrix.os }} - Compile
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [Ubuntu 18.04, ubuntu-latest]
+        distribution: ['temurin', 'adopt', 'adopt-openj9', 'zulu'] # internally 'adopt-hotspot' is the same as 'adopt'
+        version: ['8', '11']
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 1.8
+    - name: Checkout
+      uses: actions/checkout@v2.3.1
+    - name: Set up JDK 
       uses: actions/setup-java@v2
       with:
-        java-version: '8.0.302+8'
-        distribution: 'adopt'
+          java-version: ${{ matrix.version }}
+          distribution: ${{ matrix.distribution }}
     - name: Compile code
-      run: Compile code
+      run: mvn compile
       
-  build:
-    runs-on: ubuntu-latest
-    name: Run mvn build
+  run-mvn-build:
+    name: ${{ matrix.distribution }} ${{ matrix.version }} (jdk-x64) - ${{ matrix.os }} - Run mvn build
+    needs: run-java-compile
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [Ubuntu 18.04, ubuntu-latest]
+        distribution: ['temurin', 'adopt', 'adopt-openj9', 'zulu'] # internally 'adopt-hotspot' is the same as 'adopt'
+        version: ['8', '11']
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 1.8
+    - name: Checkout
+      uses: actions/checkout@v2.3.1
+    - name: Set up JDK
       uses: actions/setup-java@v2
       with:
-        java-version: '8.0.302+8'
-        distribution: 'adopt'
+        java-version: ${{ matrix.version }}
+        distribution: ${{ matrix.distribution }}
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
