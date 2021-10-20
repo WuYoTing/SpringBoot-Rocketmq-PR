@@ -1,0 +1,19 @@
+name: Realease when add tag
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+
+  realease:
+    name: realease
+    runs-on: ubuntu-latest
+    steps:
+      - name: realease
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          title: ${{ env.ReleaseVersion }}
+          prerelease: false
