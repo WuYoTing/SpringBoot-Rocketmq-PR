@@ -1,4 +1,5 @@
-name: Realease when add tag
+---
+name: "tagged-release"
 
 on:
   push:
@@ -28,8 +29,8 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-  realease:
-    name: ${{ matrix.distribution }} ${{ matrix.version }} (jdk-x64) - ${{ matrix.os }} - Realease
+  tagged-release:
+    name: ${{ matrix.distribution }} ${{ matrix.version }} (jdk-x64) - ${{ matrix.os }} - Tagged Release
     needs: run-mvn-build
     runs-on: ${{ matrix.os }}
     strategy:
@@ -42,6 +43,5 @@ jobs:
       - name: realease
         uses: marvinpinto/action-automatic-releases@latest
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          title: ${{ env.ReleaseVersion }}
-          prerelease: false
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          title: "${{ env.ReleaseVersion }}"
