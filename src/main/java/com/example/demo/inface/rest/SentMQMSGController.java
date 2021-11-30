@@ -13,15 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class SentMQMSGController {
-    @Autowired
-    TestRocketMQEventSource testRocketMQEventSource;
 
-    @RequestMapping("/mqmsg/sent")
-    public ResponseEntity<?> SentMSG() {
-        // 生產者產出資料
-        Boolean result = testRocketMQEventSource.testRocketMQMSGSent().send(
-                MessageBuilder.withPayload("Hello World").build()
-        );
-        return new ResponseEntity<>(result, new HttpHeaders(), HttpStatus.OK);
-    }
+  @Autowired
+  TestRocketMQEventSource testRocketMQEventSource;
+
+  @RequestMapping("/mqmsg/sent")
+  public ResponseEntity<?> SentMSG() {
+    // 生產者產出資料
+    Boolean result = testRocketMQEventSource.testRocketMQMSGSent().send(
+        MessageBuilder.withPayload("Hello World").build()
+    );
+    return new ResponseEntity<>(result, new HttpHeaders(), HttpStatus.OK);
+  }
 }
