@@ -8,15 +8,17 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
 public interface TestRocketMQEventSource {
-    @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    final class Topic {
-        public static final String TEST_ROCKETMQ_PUB = "test-rocketmq-pub";
-        public static final String TEST_ROCKETMQ_SUB = "test-rocketmq-sub";
-    }
 
-    @Output(Topic.TEST_ROCKETMQ_PUB)
-    MessageChannel testRocketMQMSGSent();
+  @NoArgsConstructor(access = AccessLevel.PRIVATE)
+  final class Topic {
 
-    @Input(Topic.TEST_ROCKETMQ_SUB)
-    SubscribableChannel testRocketMQMSGSentSubscribable();
+    public static final String TEST_ROCKETMQ_PUB = "test-rocketmq-pub";
+    public static final String TEST_ROCKETMQ_SUB = "test-rocketmq-sub";
+  }
+
+  @Output(Topic.TEST_ROCKETMQ_PUB)
+  MessageChannel testRocketMQMSGSent();
+
+  @Input(Topic.TEST_ROCKETMQ_SUB)
+  SubscribableChannel testRocketMQMSGSentSubscribable();
 }
