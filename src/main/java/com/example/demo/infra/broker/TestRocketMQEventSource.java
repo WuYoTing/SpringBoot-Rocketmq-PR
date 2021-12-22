@@ -7,6 +7,9 @@ import org.springframework.cloud.stream.annotation.Output;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
+/**
+ * TestRocketMQ Eventsource
+ */
 public interface TestRocketMQEventSource {
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
