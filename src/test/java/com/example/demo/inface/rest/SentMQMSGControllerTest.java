@@ -1,41 +1,46 @@
 package com.example.demo.inface.rest;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.example.demo.infra.broker.TestRocketMQEventSource;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import com.example.demo.infra.broker.TestRocketMQEventSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.test.web.servlet.MockMvc;
+
 
 @SpringBootTest
+@AutoConfigureMockMvc
 class SentMQMSGControllerTest {
 
-
-  RestTemplate restTemplate;
+  private MockMvc mockMvc;
 
   @Mock
-  TestRocketMQEventSource testRocketMQEventSource;
+  private TestRocketMQEventSource testRocketMQEventSource;
 
-  public SentMQMSGControllerTest(RestTemplate restTemplate) {
-    this.restTemplate = restTemplate;
+  @Autowired
+  public SentMQMSGControllerTest(TestRocketMQEventSource testRocketMQEventSource, MockMvc mockMvc) {
+    this.testRocketMQEventSource = testRocketMQEventSource;
+    this.mockMvc = mockMvc;
   }
-
 
   @Test
-  void sentMSG_should_receive_HTTP_OK_and_true() {
+  @DisplayName("sentMSG_should_send_message")
+  public void sentMSG_should_send_message() throws Exception {
     // Arrange
-    Message message = MessageBuilder.withPayload("Hello World").build();
-    Mockito.when(testRocketMQEventSource.testRocketMQMSGSent().send(message)).thenReturn(true);
-
     // Act
-    // this.restTemplate.getForObject("http://localhost:8080/services/{id}");
-
+    // when(testRocketMQEventSource.testRocketMQMSGSent().send(any())).thenReturn(true);
     // Assert
-
+    mockMvc.perform(get("/mqmsg/sent"))
+        .andExpect(status().isOk());
   }
+
+
 }

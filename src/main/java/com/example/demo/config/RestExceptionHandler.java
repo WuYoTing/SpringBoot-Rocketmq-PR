@@ -30,7 +30,7 @@ public class RestExceptionHandler {
   @ExceptionHandler(QueryException.class)
   @ResponseBody
   public ResponseEntity<ErrorResponse> handleQueryError(RuntimeException e) {
-    ErrorResponse errorResponse = new ErrorResponse("Query Error");
+    ErrorResponse errorResponse = new ErrorResponse("Query Error: " + e.getClass());
     return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
