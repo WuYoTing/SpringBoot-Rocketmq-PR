@@ -2,9 +2,8 @@ package com.example.demo.inface.rest;
 
 
 import com.example.demo.inface.event.SentMQMSGEventHandler;
-import com.example.demo.inface.rest.dto.SuccessResponse;
+import com.example.demo.inface.rest.dto.Response;
 import com.example.demo.infra.broker.TestRocketMQEventSource;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,13 +34,17 @@ public class SentMQMSGController {
    * @return ResponseEntity
    */
   @GetMapping("/mqmsg/sent")
-  public ResponseEntity<SuccessResponse> SentMSG() {
+  public ResponseEntity<Response> SentMSG() {
     // 生產者產出資料
     Boolean result = testRocketMQEventSource.testRocketMQMSGSent()
         .send(MessageBuilder.withPayload("Hello World").build());
     logger.info("~~~~~~~~~~~~~~~~~~~~~~~~~~Send Message Event~~~~~~~~~~~~~~~~~~~~~~~~~~");
     HashMap<String, Object> resp = new HashMap<String, Object>();
-    return new ResponseEntity<>(new SuccessResponse("successful"), new HttpHeaders(),
-        HttpStatus.OK);
+    if (result) {
+      return new ResponseEntity<>(new Response("success", ""), new HttpHeaders(), HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(new Response("error", ""), new HttpHeaders(),
+          HttpStatus.BAD_REQUEST);
+    }
   }
 }

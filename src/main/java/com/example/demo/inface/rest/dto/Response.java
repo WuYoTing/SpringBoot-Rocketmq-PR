@@ -1,11 +1,14 @@
 package com.example.demo.inface.rest.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class SuccessResponse {
+public class Response<T> {
 
   @Getter
   private String status;
+
+  @Getter
+  private T data;
 }
